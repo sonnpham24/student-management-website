@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Management System - Student Info</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 30px;
+                color: darkblue !important;
+            }
+            .nav-link {
+                font-size: 15px;
+            }
+            .nav-link.active {
+                position: relative;
+                font-weight: bold;
+                color: darkblue !important;
+            }
+            .nav-link.active::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -5px;
+                width: 100%;
+                height: 2px;
+                background-color: darkblue;
+            }
+            .nav-link:hover {
+                text-decoration: none;
+            }
+            .btn-primary {
+                background-color: gold;
+                border-color: gold;
+                color:black;
+            }
+            .btn-primary:hover {
+                background-color: yellow;
+                border-color: yellow;
+                color: black;
+            }
+            .modal-title {
+                color:darkblue;
+            }
+            .btn-info {
+                background-color: darkblue;
+                color: white;
+                border-color: darkblue;
+            }
+            .btn-info:hover {
+                background-color: blue;
+                color: white;
+                border-color: blue;
+            }
+
+            #main-content .row {
+                display: flex;
+                gap: 20px;
+            }
+
+            #main-content .column {
+                flex: 1;
+            }
+
+            #main-content .image-column {
+                flex: 0.5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: #f0f0f0;
+                border: 1px dashed #ccc;
+                border-radius: 8px;
+                height: 250px;
+            }
+
+            #main-content .image-column p {
+                color: #aaa;
+                font-style: italic;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand text-primary" href="#">Student Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html">Sinh viên</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hocphan.html">Học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lop.html">Lớp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dangky.html">Đăng ký học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="diem.html">Nhập điểm</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="approve.html">Approve Admins</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <div id="main-content">
+                <h1 class="mb-4">Thông tin sinh viên</h1>
+                <div class="row">
+                    <div class="column image-column">
+                        <p>Ảnh sinh viên (Chưa khả dụng)</p>
+                    </div>
+                    <div class="column">
+                        <p><strong>Mã số sinh viên:</strong> <span id="student_id"></span></p>
+                        <p><strong>Họ và tên:</strong> <span id="name"></span></p>
+                        <p><strong>Giới tính:</strong> <span id="gender"></span></p>
+                        <p><strong>Ngày sinh:</strong> <span id="dob"></span></p>
+                        <p><strong>Email:</strong> <span id="email"></span></p>
+                    </div>
+                    <div class="column">
+                        <p><strong>Lớp học:</strong> <span id="academic_class"></span></p>
+                        <p><strong>Năm học:</strong> <span id="academic_year"></span></p>
+                        <p><strong>Địa chỉ:</strong> <span id="address"></span></p>
+                        <p><strong>Khoa:</strong> <span id="faculty_id"></span></p>
+                        <p><strong>Trạng thái:</strong> <span id="status"></span></p>
+                    </div>
+                </div>
+
+                <hr>
+                <h1 class="mb-4">Thông tin học tập</h1>
+                <table id="studentGradesTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Mã học phần</th>
+                            <th>Mã lớp học</th>
+                            <th>Tên học phần</th>
+                            <th>Điểm giữa kỳ</th>
+                            <th>Điểm cuối kỳ</th>
+                            <th>Điểm chữ</th>
+                            <th>Học kỳ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td colspan="7" class="text-center">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" onclick="goBack()">Quay lại</button>
+            </div>
+        </div>
+        <script src="ttsv.js"></script>
+
+        <!-- FOOTER -->
+        <footer class="pt-4 mt-5" style="background-color: darkblue; color: white;">
+            <div class="container">
+                <div class="row">
+                    <!-- About Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Về chúng tôi</h5>
+                        <p>Hệ thống quản lý sinh viên giúp các trường học sắp xếp hợp lý hoạt động của họ, cung cấp cho các nhân viên phụ trách của bộ máy giáo dục một nền tảng hiệu quả để quản lý các hoạt động học thuật.</p>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Các liên kết</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="index.html" class="text-white text-decoration-none">Quản lý sinh viên</a></li>
+                            <li><a href="hocphan.html" class="text-white text-decoration-none">Quản lý học phần</a></li>
+                            <li><a href="lop.html" class="text-white text-decoration-none">Quản lý lớp</a></li>
+                            <li><a href="dangky.html" class="text-white text-decoration-none">Đăng ký học phần</a></li>
+                            <li><a href="diem.html" class="text-white text-decoration-none">Nhập điểm</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Contact Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Liên hệ</h5>
+                        <p>
+                            <strong>Email:</strong> Son.PC205220@sis.hust.edu.vn<br>
+                            <strong>Điện thoại:</strong> +1 234 567 890
+                        </p>
+                        <div>
+                            <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="mb-0">&copy; 2025 Student Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    
+        <!-- Add Bootstrap Icons for social media links -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        
+    </body>
+    <script>
+        function logout() {
+            localStorage.removeItem('token'); // Remove the JWT token
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script> 
+</html>

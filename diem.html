@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Management System - Student Grades</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 30px;
+                color: darkblue !important;
+            }
+            .nav-link {
+                font-size: 15px;
+            }
+            .nav-link.active {
+                position: relative;
+                font-weight: bold;
+                color: darkblue !important;
+            }
+            .nav-link.active::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -5px;
+                width: 100%;
+                height: 2px;
+                background-color: darkblue;
+            }
+            .nav-link:hover {
+                text-decoration: none;
+            }
+            .btn-primary {
+                background-color: gold;
+                border-color: gold;
+                color:black;
+            }
+            .btn-primary:hover {
+                background-color: yellow;
+                border-color: yellow;
+                color: black;
+            }
+            .modal-title {
+                color:darkblue;
+            }
+            .btn-info {
+                background-color: darkblue;
+                color: white;
+                border-color: darkblue;
+            }
+            .btn-info:hover {
+                background-color: blue;
+                color: white;
+                border-color: blue;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand text-primary" href="index.html">Student Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Sinh viên</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hocphan.html">Học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lop.html">Lớp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dangky.html">Đăng ký học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Nhập điểm</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="approve.html">Approve Admins</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container mt-4">
+            <h1 class="mb-4">Quản lý điểm</h1>
+    
+            <!-- Form for entering grades -->
+            <form id="gradeForm">
+                <div class="mb-3">
+                    <label for="student_id" class="form-label">Mã số sinh viên</label>
+                    <input type="number" class="form-control" id="student_id" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="class_id" class="form-label">Mã lớp</label>
+                    <input type="number" class="form-control" id="class_id" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="mid_grade" class="form-label">Điểm giữa kỳ</label>
+                    <input type="number" class="form-control" id="mid_grade" min="0" max="10" step="0.1" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="final_grade" class="form-label">Điểm cuối kỳ</label>
+                    <input type="number" class="form-control" id="final_grade" min="0" max="10" step="0.1" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="weight" class="form-label">Chọn trọng số</label>
+                    <select class="form-control" id="weight" required>
+                        <option value="30-70">30% - 70%</option>
+                        <option value="40-60">40% - 60%</option>
+                        <option value="50-50">50% - 50%</option>
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Lưu điểm</button>
+            </form>
+    
+            <hr>
+    
+            <!-- Grades Table -->
+            <h3>Danh sách điểm</h3>
+            <table class="table table-bordered" id="gradesTable">
+                <thead>
+                    <tr>
+                        <th>Mã số sinh viên</th>
+                        <th>Mã lớp</th>
+                        <th>Mã học phần</th>
+                        <th>Điểm giữa kỳ</th>
+                        <th>Điểm cuối kỳ</th>
+                        <th>Điểm chữ học phần</th>
+                        <th>Học kỳ</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic content will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        <script src="diem.js"></script>
+
+        <!-- FOOTER -->
+        <footer class="pt-4 mt-5" style="background-color: darkblue; color: white;">
+            <div class="container">
+                <div class="row">
+                    <!-- About Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Về chúng tôi</h5>
+                        <p>Hệ thống quản lý sinh viên giúp các trường học sắp xếp hợp lý hoạt động của họ, cung cấp cho các nhân viên phụ trách của bộ máy giáo dục một nền tảng hiệu quả để quản lý các hoạt động học thuật.</p>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Các liên kết</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="index.html" class="text-white text-decoration-none">Quản lý sinh viên</a></li>
+                            <li><a href="hocphan.html" class="text-white text-decoration-none">Quản lý học phần</a></li>
+                            <li><a href="lop.html" class="text-white text-decoration-none">Quản lý lớp</a></li>
+                            <li><a href="dangky.html" class="text-white text-decoration-none">Đăng ký học phần</a></li>
+                            <li><a href="diem.html" class="text-white text-decoration-none">Nhập điểm</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Contact Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Liên hệ</h5>
+                        <p>
+                            <strong>Email:</strong> Son.PC205220@sis.hust.edu.vn<br>
+                            <strong>Điện thoại:</strong> +1 234 567 890
+                        </p>
+                        <div>
+                            <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="mb-0">&copy; 2025 Student Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    
+        <!-- Add Bootstrap Icons for social media links -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    </body>
+    <script>
+        function logout() {
+            localStorage.removeItem('token'); // Remove the JWT token
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script> 
+</html>

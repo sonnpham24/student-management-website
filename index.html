@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Management System - Home</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 30px;
+                color: darkblue !important;
+            }
+            .nav-link {
+                font-size: 15px;
+            }
+            .nav-link.active {
+                position: relative;
+                font-weight: bold;
+                font-style: italic;
+                color: darkblue !important;
+            }
+            .nav-link.active::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -5px;
+                width: 100%;
+                height: 2px;
+                background-color: darkblue;
+            }
+            .nav-link:hover {
+                text-decoration: none;
+            }
+            .btn-primary {
+                background-color: gold;
+                border-color: gold;
+                color:black;
+            }
+            .btn-primary:hover {
+                background-color: yellow;
+                border-color: yellow;
+                color: black;
+            }
+            .modal-title {
+                color:darkblue;
+            }
+            .btn-info {
+                background-color: darkblue;
+                color: white;
+                border-color: darkblue;
+            }
+            .btn-info:hover {
+                background-color: blue;
+                color: white;
+                border-color: blue;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand text-primary" href="#">Student Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Sinh viên</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hocphan.html">Học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lop.html">Lớp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dangky.html">Đăng ký học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="diem.html">Nhập điểm</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="approve.html">Approve Admins</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container mt-4">
+            <h1 class="mb-4">Quản lý sinh viên</h1>
+    
+            <!-- Search bar and Add button-->
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="input-group" style="width: 300px;">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Tìm theo mã số sinh viên">
+                    <button class="btn btn-outline-secondary" id="searchButton" onclick="searchStudentById()">Tìm</button>
+                </div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#studentModal" onclick="resetForm()">Thêm sinh viên</button>
+            </div>
+            
+
+            <!-- Table for displaying students -->           
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã số sinh viên</th>
+                        <th>Họ và tên</th>
+                        <th>Giới tính</th>
+                        <th>Ngày sinh</th>
+                        <th>Lớp</th>
+                        <th>Email</th>
+                        <th>Khoa/Viện quản lý</th>
+                        <th>Tình trạng học tập</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="studentTableBody">
+                    <!-- JavaScript will populate this -->
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Modal for Add/Update Student -->
+        <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="studentModalLabel">Thêm sinh viên</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="studentForm">
+                            <div class="mb-3">
+                                <label for="student_id" class="form-label">Mã số sinh viên</label>
+                                <input type="text" class="form-control" id="student_id" name="student_id" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Họ và tên</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gender" class="form-label">Giới tính</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="Male">Nam</option>
+                                    <option value="Female">Nữ</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dob" class="form-label">Ngày sinh</label>
+                                <input type="date" class="form-control" id="dob" name="dob" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="academic_year" class="form-label">Năm vào trường</label>
+                                <input type="text" class="form-control" id="academic_year" name="academic_year" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="academic_class" class="form-label">Lớp</label>
+                                <input type="text" class="form-control" id="academic_class" name="academic_class" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Số điện thoại</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Địa chỉ</label>
+                                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="faculty_id" class="form-label">Khoa/Viện quản lý (Mã Khoa/Viện)</label>
+                                <input type="text" class="form-control" id="faculty_id" name="faculty_id" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Tình trạng học tập</label>
+                                <select class="form-select" id="status" name="status" required>
+                                    <option value="Học">Học</option>
+                                    <option value="Thôi học">Thôi học</option>
+                                    <option value="Tốt nghiệp">Tốt nghiệp</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/sinhvien.js"></script>
+
+        <!-- FOOTER -->
+        <footer class="pt-4 mt-5" style="background-color: darkblue; color: white;">
+            <div class="container">
+                <div class="row">
+                    <!-- About Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Về chúng tôi</h5>
+                        <p>Hệ thống quản lý sinh viên giúp các trường học sắp xếp hợp lý hoạt động của họ, cung cấp cho các nhân viên phụ trách của bộ máy giáo dục một nền tảng hiệu quả để quản lý các hoạt động học thuật.</p>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Các liên kết</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="index.html" class="text-white text-decoration-none">Quản lý sinh viên</a></li>
+                            <li><a href="hocphan.html" class="text-white text-decoration-none">Quản lý học phần</a></li>
+                            <li><a href="lop.html" class="text-white text-decoration-none">Quản lý lớp</a></li>
+                            <li><a href="dangky.html" class="text-white text-decoration-none">Đăng ký học phần</a></li>
+                            <li><a href="diem.html" class="text-white text-decoration-none">Nhập điểm</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Contact Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Liên hệ</h5>
+                        <p>
+                            <strong>Email:</strong> Son.PC205220@sis.hust.edu.vn<br>
+                            <strong>Điện thoại:</strong> +1 234 567 890
+                        </p>
+                        <div>
+                            <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="mb-0">&copy; 2025 Student Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    
+        <!-- Add Bootstrap Icons for social media links -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    </body>
+    <script>
+        function logout() {
+            localStorage.removeItem('token'); // Remove the JWT token
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // Redirect to login page
+        }
+    </script>    
+</html>

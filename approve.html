@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Student Management System - Approve Admins</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 30px;
+                color: darkblue !important;
+            }
+            .nav-link {
+                font-size: 15px;
+            }
+            .nav-link.active {
+                position: relative;
+                font-weight: bold;
+                color: darkblue !important;
+            }
+            .nav-link.active::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                bottom: -5px;
+                width: 100%;
+                height: 2px;
+                background-color: darkblue;
+            }
+            .nav-link:hover {
+                text-decoration: none;
+            }
+            .btn-primary {
+                background-color: gold;
+                border-color: gold;
+                color:black;
+            }
+            .btn-primary:hover {
+                background-color: yellow;
+                border-color: yellow;
+                color: black;
+            }
+            .modal-title {
+                color:darkblue;
+            }
+            .btn-info {
+                background-color: darkblue;
+                color: white;
+                border-color: darkblue;
+            }
+            .btn-info:hover {
+                background-color: blue;
+                color: white;
+                border-color: blue;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
+            <div class="container">
+                <a class="navbar-brand text-primary" href="#">Student Management</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Sinh viên</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="hocphan.html">Học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="lop.html">Lớp</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="dangky.html">Đăng ký học phần</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="diem.html">Nhập điểm</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="approve.html">Approve Admins</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" onclick="logout()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-4">
+            <h2>Pending Admin Requests</h2>
+            <ul id="adminRequests"></ul>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="pt-4 mt-5" style="background-color: darkblue; color: white;">
+            <div class="container">
+                <div class="row">
+                    <!-- About Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Về chúng tôi</h5>
+                        <p>Hệ thống quản lý sinh viên giúp các trường học sắp xếp hợp lý hoạt động của họ, cung cấp cho các nhân viên phụ trách của bộ máy giáo dục một nền tảng hiệu quả để quản lý các hoạt động học thuật.</p>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Các liên kết</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="index.html" class="text-white text-decoration-none">Quản lý sinh viên</a></li>
+                            <li><a href="hocphan.html" class="text-white text-decoration-none">Quản lý học phần</a></li>
+                            <li><a href="lop.html" class="text-white text-decoration-none">Quản lý lớp</a></li>
+                            <li><a href="dangky.html" class="text-white text-decoration-none">Đăng ký học phần</a></li>
+                            <li><a href="diem.html" class="text-white text-decoration-none">Nhập điểm</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Contact Section -->
+                    <div class="col-md-4 mb-3">
+                        <h5>Liên hệ</h5>
+                        <p>
+                            <strong>Email:</strong> Son.PC205220@sis.hust.edu.vn<br>
+                            <strong>Điện thoại:</strong> +1 234 567 890
+                        </p>
+                        <div>
+                            <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+                            <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <p class="mb-0">&copy; 2025 Student Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+    <script>
+        async function fetchPendingAdmins() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("No authentication token found.");
+                }
+    
+                const response = await fetch('http://localhost:3000/admin/requests', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Failed to fetch admin requests.");
+                }
+    
+                const admins = await response.json();
+                console.log("Fetched admins:", admins);
+    
+                displayPendingAdmins(admins);
+            } catch (error) {
+                console.error("Error fetching admins:", error);
+                alert("Failed to load pending admin requests.");
+            }
+        }
+    
+        function displayPendingAdmins(admins) {
+            const adminRequestsList = document.getElementById("adminRequests");
+            adminRequestsList.innerHTML = ""; // Clear previous list
+    
+            if (admins.length === 0) {
+                adminRequestsList.innerHTML = "<li>No pending admin requests.</li>";
+                return;
+            }
+    
+            admins.forEach(admin => {
+                const listItem = document.createElement("li");
+                listItem.innerHTML = `
+                    ${admin.email} 
+                    <button onclick="approveAdmin(${admin.admin_id})">Approve</button>
+                    <button onclick="deleteAdmin(${admin.admin_id})">Delete</button>
+                `;
+                adminRequestsList.appendChild(listItem);
+            });
+        }
+    
+        async function approveAdmin(adminId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/approve/${adminId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Failed to approve admin.");
+                }
+    
+                alert("Admin approved successfully!");
+                fetchPendingAdmins(); // Refresh list
+            } catch (error) {
+                console.error("Error approving admin:", error);
+                alert("Error approving admin.");
+            }
+        }
+    
+        async function deleteAdmin(adminId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:3000/admin/delete/${adminId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Failed to delete admin.");
+                }
+    
+                alert("Admin deleted successfully!");
+                fetchPendingAdmins(); // Refresh list
+            } catch (error) {
+                console.error("Error deleting admin:", error);
+                alert("Error deleting admin.");
+            }
+        }
+    
+        fetchPendingAdmins(); // Call function on page load
+    </script>  
+</html>
