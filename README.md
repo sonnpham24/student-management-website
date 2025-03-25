@@ -1,9 +1,12 @@
 TRANG WEB QUẢN LÝ SINH VIÊN
 
 Quản lý sinh viên, thông tin học tập (đăng ký học, kết quả học tập,... - nghiệp vụ giống như quản lý sinh viên của Đại học Bách Khoa Hà Nội.
-Các tính năng: (i) kết nối với csdl, (ii) thực hiện các chức năng thêm/sửa/xóa sinh viên/học phần/lớp học (iii) thực hiện chức năng đăng ký học phần, (iv) ghi nhận kết quả học tập
-Các công nghệ sử dụng: HTML, CSS, Bootstrap, NodeJS, ExpressJS framework, PostgreSQL
-IDE: Visual Studio Code
+
+Các tính năng: (i) kết nối với csdl, (ii) thực hiện các chức năng thêm/sửa/xóa sinh viên/học phần/lớp học (iii) thực hiện chức năng đăng ký học phần, (iv) ghi nhận kết quả học tập.
+
+Các công nghệ sử dụng: HTML, CSS, Bootstrap, NodeJS, ExpressJS framework, PostgreSQL.
+
+IDE: Visual Studio Code.
 
 HƯỚNG DẪN TẢI, CHẠY VÀ SỬ DỤNG:
 - Tải các phần mềm cần thiết: Visual Studio Code, PostgreSQL, NodeJS (LTS version).
